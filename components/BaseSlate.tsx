@@ -36,7 +36,20 @@ const MentionExample = () => {
 
   const onKeyDown: KeyboardEventHandler<HTMLDivElement> = useCallback(
     (event) => {
-      if (target) {
+      if (event.ctrlKey) {
+        switch (event.key) {
+          case '/':
+            event.preventDefault();
+            const match = Editor.nodes(editor, {
+              match: (n) => (n as CustomElement).type === 'todo',
+            }).next().value;
+            Transforms.setNodes(
+              editor,
+              { type: match ? 'paragraph' : 'todo' },
+              { match: (n) => Editor.isBlock(editor, n) },
+            );
+        }
+      } else if (target) {
         switch (event.key) {
           case 'ArrowDown':
             event.preventDefault();
@@ -74,7 +87,7 @@ const MentionExample = () => {
       el.style.top = `${rect.top + window.pageYOffset + 24}px`;
       el.style.left = `${rect.left + window.pageXOffset}px`;
     }
-  }, [chars.length, editor, index, search, target]);
+  }, [chars.length, editor, target]);
 
   return (
     <Slate
@@ -150,11 +163,11 @@ const withMentions = (editor: CustomEditor) => {
   const { isInline, isVoid } = editor;
 
   editor.isInline = (element: CustomElement) => {
-    return element.type === 'mention' ? true : isInline(element);
+    return element.type === 'mention' || isInline(element);
   };
 
   editor.isVoid = (element: CustomElement) => {
-    return element.type === 'mention' ? true : isVoid(element);
+    return element.type === 'mention' || isVoid(element);
   };
 
   return editor;
@@ -175,6 +188,8 @@ const Element = (props: RenderElementProps) => {
   switch (element.type) {
     case 'mention':
       return <Mention {...props} />;
+    case 'todo':
+      return <Todo {...props} />;
     default:
       return <p {...attributes}>{children}</p>;
   }
@@ -202,6 +217,16 @@ const Mention = ({ attributes, children, element }: RenderElementProps) => {
     >
       {children}@{character}
     </span>
+  );
+};
+
+const Todo = ({ attributes, children }: RenderElementProps) => {
+  const [checked, setChecked] = useState(false);
+  return (
+    <div {...attributes}>
+      <input type='checkbox' checked={checked} onChange={() => setChecked(!checked)} />
+      {children}
+    </div>
   );
 };
 
