@@ -1,0 +1,5 @@
+.next/
+node_modules/
+
+styles/_variables.scss
+styles/_maps.scss
