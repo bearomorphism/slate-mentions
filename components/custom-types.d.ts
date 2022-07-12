@@ -2,15 +2,23 @@
 import { BaseEditor, Descendant } from 'slate';
 import { ReactEditor } from 'slate-react';
 
-export type ParagraphElement = { type: 'paragraph'; children: CustomText[] }
-export type ToDoElement = { type: 'todo'; children: CustomText[] }
+interface Task {
+  title: string;
+  assignee: string;
+  due: Date;
+}
 
-type CustomElement = ParagraphElement | ToDoElement;
-type CustomText = { bold?: boolean, text: string };
+export type ParagraphElement = { type: 'paragraph'; children: CustomText[] };
+export type ToDoElement = { type: 'todo'; children: CustomText[] };
+export type MentionElement = { type: 'mention'; task: Task; children: CustomText[] };
+
+type CustomElement = ParagraphElement | ToDoElement | MentionElement;
+type CustomText = { bold?: boolean; text: string };
+type CustomEditor = BaseEditor & ReactEditor;
 
 declare module 'slate' {
   interface CustomTypes {
-    Editor: BaseEditor & ReactEditor;
+    Editor: CustomEditor;
     Element: CustomElement;
     Text: CustomText;
   }
