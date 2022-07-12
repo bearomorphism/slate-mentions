@@ -6,7 +6,7 @@ export type ParagraphElement = { type: 'paragraph'; children: CustomText[] }
 export type ToDoElement = { type: 'todo'; children: CustomText[] }
 
 type CustomElement = ParagraphElement | ToDoElement;
-type CustomText = { text: string };
+type CustomText = { bold?: boolean, text: string };
 
 declare module 'slate' {
   interface CustomTypes {

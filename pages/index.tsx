@@ -5,7 +5,7 @@ const Home: NextPage = () => {
   return (
     <div className='container'>
       <div className='row'>
-        <div className='col-6'>
+        <div className='col-6 p-5'>
           <BaseSlate />
         </div>
       </div>
