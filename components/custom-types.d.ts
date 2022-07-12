@@ -10,7 +10,11 @@ interface Task {
 
 export type ParagraphElement = { type: 'paragraph'; children: CustomText[] };
 export type ToDoElement = { type: 'todo'; children: CustomText[] };
-export type MentionElement = { type: 'mention'; task: Task; children: CustomText[] };
+export type MentionElement = {
+  type: 'mention';
+  character: string;
+  children: CustomText[];
+};
 
 type CustomElement = ParagraphElement | ToDoElement | MentionElement;
 type CustomText = { bold?: boolean; text: string };
