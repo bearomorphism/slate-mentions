@@ -1,5 +1,6 @@
 import type { NextPage } from 'next';
 import BaseSlate from '../components/BaseSlate';
+import QuerySlate from '../components/QuerySlate';
 
 const Home: NextPage = () => {
   return (
@@ -7,6 +8,9 @@ const Home: NextPage = () => {
       <div className='row'>
         <div className='col-6 p-5'>
           <BaseSlate />
+        </div>
+        <div className='col-6 p-5'>
+          <QuerySlate />
         </div>
       </div>
     </div>
